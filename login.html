@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 320px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-top: 0;
+      font-size: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 9px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button.submit-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button.submit-btn:hover {
+      background-color: #0056b3;
+    }
+    .msg {
+      margin-bottom: 12px;
+      padding: 8px;
+      border-radius: 4px;
+      text-align: center;
+      display: none;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .msg.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
+    .msg.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
+    .link-text { text-align: center; margin-top: 15px; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Student Login</h2>
+    <div id="msgBox" class="msg"></div>
+
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email Address" required>
+      <input type="password" id="loginPass" placeholder="Password" required>
+      <button type="submit" class="submit-btn">Login</button>
+    </form>
+
+    <div class="link-text">
+      Don't have an account? <a href="register.html">Register here</a>
+    </div>
+  </div>
+
+  <script>
+    function showMsg(message, isSuccess) {
+      const msgBox = document.getElementById('msgBox');
+      msgBox.textContent = message;
+      msgBox.className = 'msg ' + (isSuccess ? 'success' : 'error');
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPass').value;
+
+      // 1. Fetch registered users from Local Storage
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+
+      // 2. Validate credentials against stored list
+      const user = users.find(u => u.email === email && u.password === pass);
+
+      if (user) {
+        showMsg(`Welcome back, ${user.name}! Login successful.`, true);
+        this.reset();
+      } else {
+        showMsg("Invalid email or password!", false);
+      }
+    });
+  </script>
+
+</body>
+</html>
